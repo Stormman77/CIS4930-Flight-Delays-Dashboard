@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why Flights Run Late</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>Why Flights Run Late</h1>
+    <p>Where do U.S. flight delays come from, and do they build through the day? <span class="muted">June 2026, all reporting U.S. carriers.</span></p>
+  </header>
+
+  <section id="filter-bar" class="filter-bar" aria-label="Current selection">
+    <div id="filter-count" class="filter-count"></div>
+    <div id="filter-chips" class="filter-chips"></div>
+    <button id="clear-all" class="clear-all" type="button">Clear all</button>
+  </section>
+
+  <div id="error-banner" class="error-banner" role="alert" hidden></div>
+
+  <main id="dashboard" class="dashboard">
+    <article class="card">
+      <h2 id="timeline-title"></h2>
+      <p class="caption">How each day of June compared. The purple line is the share of arrived flights that landed at least 15 minutes late; choosing a cause switches it to that cause's share of delay minutes. Drag across days to filter the other views, and click outside the selection to clear it.</p>
+      <div id="timeline-chart" class="chart"></div>
+    </article>
+
+    <article class="card">
+      <h2>Average arrival delay per flight, by scheduled departure hour</h2>
+      <p class="caption">Minutes per arrived flight, split by the cause airlines reported. Click a cause to recolor the other views.</p>
+      <div id="hours-legend" class="legend"></div>
+      <div id="hours-chart" class="chart"></div>
+    </article>
+
+    <article class="card">
+      <div class="card-heading">
+        <h2 id="map-title"></h2>
+        <div class="toolbar" role="group" aria-label="Map tools">
+          <button id="map-mode-zoom" type="button">Zoom &amp; click</button>
+          <button id="map-mode-brush" type="button">Drag to select</button>
+          <button id="map-reset" type="button">Reset zoom</button>
+        </div>
+      </div>
+      <p class="caption">Flights are counted at their origin airport, so this shows where late-arriving flights departed from. Shift+click adds airports. Puerto Rico, the U.S. Virgin Islands, Guam and Saipan aren't drawn but count in the other views.</p>
+      <div id="map-legend" class="legend"></div>
+      <div id="map-chart" class="chart"></div>
+    </article>
+
+    <article class="card">
+      <h2 id="carriers-title"></h2>
+      <p class="caption">How each airline compares for the current selection, worst first. Regional airlines appear under their own name, not the major airline they fly for. Click a carrier to filter; Shift+click adds more.</p>
+      <div class="legend"><span class="swatch" style="background:#c3c2b7"></span><span>Fewer than 30 flights in the selection</span></div>
+      <div id="carriers-chart" class="chart"></div>
+    </article>
+  </main>
+
+  <footer class="page-footer">
+    Data: U.S. Bureau of Transportation Statistics, On-Time Performance (June 2026); airport locations from OurAirports.
+  </footer>
+
+  <div id="tooltip" class="tooltip" role="status"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
