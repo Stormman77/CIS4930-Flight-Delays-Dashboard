@@ -73,7 +73,7 @@ export function createCarriers() {
     groups.classed("is-selected", (d) => state.carriers.has(d.carrier))
       .on("pointermove", (event, d) => showTip(event, tipHtml(d)))
       .on("pointerleave", hideTip)
-      .on("click", (event, d) => setState({ carriers: toggled(state.carriers, d.carrier, event.shiftKey) }));
+      .on("click", (event, d) => setState({ carriers: toggled(state.carriers, d.carrier, event.ctrlKey || event.metaKey) }));
 
     groups.transition(t())
       .attr("transform", (d) => `translate(0,${y(d.carrier)})`)

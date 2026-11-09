@@ -73,9 +73,9 @@ Use `127.0.0.1` rather than `localhost`; on Windows, `localhost` can add about t
 | View | Interaction | What the other views do |
 |---|---|---|
 | Daily timeline | Drag across days | Hour, map and carrier views re-aggregate to those dates |
-| Hour of day by cause | Click a cause or legend item | Timeline, map and carriers show that cause's share of delay minutes |
-| Airport map | Click or Shift+click; "Drag to select" boxes a region; scroll to zoom | Timeline, hour and carrier views filter to those airports |
-| Carrier ranking | Click or Shift+click | Timeline, hour and map views filter to those carriers |
+| Hour of day by cause | Click a cause or legend item; Ctrl+click (Cmd+click on Mac) combines causes | Timeline, map and carriers show the selected causes' share of delay minutes |
+| Airport map | Click or Ctrl+click (Cmd+click on Mac); "Drag to select" boxes a region; scroll to zoom | Timeline, hour and carrier views filter to those airports |
+| Carrier ranking | Click or Ctrl+click (Cmd+click on Mac) | Timeline, hour and map views filter to those carriers |
 
 The bar at the top shows the current selection and flight count. Remove one filter with its × or use **Clear all**.
 

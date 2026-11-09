@@ -5,7 +5,7 @@ export const state = {
   dates: null,            // ["YYYY-MM-DD", "YYYY-MM-DD"] or null
   airports: new Set(),
   carriers: new Set(),
-  cause: null,            // a cause key, or null for "% late"
+  causes: new Set(),      // selected cause keys; empty means "% late"
 };
 
 const listeners = new Set();
@@ -20,11 +20,11 @@ export function setState(patch) {
 }
 
 export function clearAll() {
-  setState({ dates: null, airports: new Set(), carriers: new Set(), cause: null });
+  setState({ dates: null, airports: new Set(), carriers: new Set(), causes: new Set() });
 }
 
-// Click selects one item (or clears it if it's the only one selected);
-// Shift+click adds or removes it.
+// A plain click selects one item (or clears it if it's the only one selected);
+// Ctrl+click (Cmd+click on Mac) adds or removes it.
 export function toggled(current, value, additive) {
   const next = new Set(additive ? current : []);
   if (additive) {
@@ -37,5 +37,5 @@ export function toggled(current, value, additive) {
 }
 
 export function hasFilters() {
-  return Boolean(state.dates || state.airports.size || state.carriers.size || state.cause);
+  return Boolean(state.dates || state.airports.size || state.carriers.size || state.causes.size);
 }

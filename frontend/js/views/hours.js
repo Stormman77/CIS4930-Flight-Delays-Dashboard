@@ -1,4 +1,4 @@
-import { state, setState } from "../state.js";
+import { state, setState, toggled } from "../state.js";
 import {
   app, CAUSE_COLORS, CAUSE_KEYS, TRANSITION_MS, transitionEase, causeMinutes,
   fmtInt, showTip, hideTip, tipRow, emptyNote, drawGrid, axisTitle,
@@ -35,12 +35,13 @@ export function createHours() {
   const barWidth = Math.min(MAX_BAR, x.bandwidth());
   const barX = (x.bandwidth() - barWidth) / 2;
 
-  const toggleCause = (key) => setState({ cause: state.cause === key ? null : key });
+  const toggleCause = (event, key) =>
+    setState({ causes: toggled(state.causes, key, event.ctrlKey || event.metaKey) });
 
   d3.select("#hours-legend").selectAll("button").data(CAUSE_KEYS).join("button")
     .attr("class", "legend-item").attr("type", "button")
     .html((key) => `<span class="swatch" style="background:${CAUSE_COLORS[key]}"></span>${app.causeLabels[key]}`)
-    .on("click", (event, key) => toggleCause(key));
+    .on("click", toggleCause);
 
   const svg = d3.select("#hours-chart").append("svg").attr("viewBox", `0 0 ${W} ${H}`);
   const plot = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
@@ -58,7 +59,7 @@ export function createHours() {
   const segments = columns.selectAll("path").data((h) => CAUSE_KEYS.map((key) => ({ h, key }))).join("path")
     .attr("fill", (d) => CAUSE_COLORS[d.key])
     .attr("d", segmentPath(barX, iH, iH, barWidth, 0))
-    .on("click", (event, d) => toggleCause(d.key));
+    .on("click", (event, d) => toggleCause(event, d.key));
 
   const note = emptyNote(plot, iW / 2, iH / 2);
   let byHour = new Map();
@@ -91,7 +92,7 @@ export function createHours() {
       .call(d3.axisLeft(y).ticks(5).tickSizeOuter(0));
 
     segments
-      .attr("opacity", (d) => (state.cause && state.cause !== d.key ? 0.22 : 1))
+      .attr("opacity", (d) => (state.causes.size && !state.causes.has(d.key) ? 0.22 : 1))
       .transition().duration(TRANSITION_MS).ease(transitionEase)
       .attr("d", (d) => {
         const row = byHour.get(d.h);
@@ -107,7 +108,7 @@ export function createHours() {
 
     note.style("display", hasData ? "none" : null);
     d3.select("#hours-legend").selectAll("button")
-      .attr("aria-pressed", (key) => String(state.cause === key));
+      .attr("aria-pressed", (key) => String(state.causes.has(key)));
   }
 
   return { render };

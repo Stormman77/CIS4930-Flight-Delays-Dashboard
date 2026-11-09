@@ -17,6 +17,7 @@ export const CAUSE_COLORS = {
 };
 export const CAUSE_KEYS = Object.keys(CAUSE_COLORS);
 export const PCT_LATE_COLOR = "#6250d6";
+export const COMBINED_CAUSES_COLOR = "#0f5f6b";
 export const SMALL_SAMPLE_COLOR = "#c3c2b7";
 export const MIN_FLIGHTS = 30;
 
@@ -34,25 +35,35 @@ export const causeMinutes = (d) => CAUSE_KEYS.reduce((sum, key) => sum + d[key],
 
 // The one measure the timeline, map and carrier views share.
 export function metric(d) {
-  if (!state.cause) return d.arrived ? (d.late / d.arrived) * 100 : null;
+  if (!state.causes.size) return d.arrived ? (d.late / d.arrived) * 100 : null;
   const total = causeMinutes(d);
-  return total ? (d[state.cause] / total) * 100 : null;
+  if (!total) return null;
+  return (d3.sum(state.causes, (key) => d[key]) / total) * 100;
 }
 
-export const metricColor = () => (state.cause ? CAUSE_COLORS[state.cause] : PCT_LATE_COLOR);
+// One cause keeps its own color; a combination gets a color no single cause uses.
+export function metricColor() {
+  if (!state.causes.size) return PCT_LATE_COLOR;
+  return state.causes.size === 1 ? CAUSE_COLORS[[...state.causes][0]] : COMBINED_CAUSES_COLOR;
+}
+
+// Names the selected causes in stacking order, whatever order they were clicked.
+export function selectedCausesLabel() {
+  return CAUSE_KEYS.filter((key) => state.causes.has(key)).map((key) => app.causeLabels[key]).join(" + ");
+}
 
 export const metricTitle = () =>
-  state.cause ? `${app.causeLabels[state.cause]} share of delay minutes` : "Share of flights arriving 15+ minutes late";
+  state.causes.size ? `${selectedCausesLabel()} share of delay minutes` : "Share of flights arriving 15+ minutes late";
 
 export const metricAxisLabel = () =>
-  state.cause ? "Share of delay minutes (%)" : "Arrived flights 15+ min late (%)";
+  state.causes.size ? "Share of delay minutes (%)" : "Arrived flights 15+ min late (%)";
 
-export const metricShort = () => (state.cause ? `${app.causeLabels[state.cause]} share` : "Late");
+export const metricShort = () => (state.causes.size ? `${selectedCausesLabel()} share` : "Late");
 
 // Percentage axes stay fixed so selections can be compared; "% late" holds at
 // 0-60 and only widens to 100 when a small selection goes past 60.
 export function metricDomain(values) {
-  if (state.cause) return [0, 100];
+  if (state.causes.size) return [0, 100];
   return [0, d3.max(values) > 60 ? 100 : 60];
 }
 

@@ -1,5 +1,5 @@
 import { state, onChange, clearAll, setState, hasFilters } from "./state.js";
-import { API_BASE, app, setMeta, fmtInt, fmtPct, hideTip } from "./shared.js";
+import { API_BASE, app, setMeta, fmtInt, fmtPct, hideTip, selectedCausesLabel } from "./shared.js";
 import { createTimeline } from "./views/timeline.js";
 import { createHours } from "./views/hours.js";
 import { createMap } from "./views/map.js";
@@ -82,7 +82,7 @@ function chips() {
     const label = codes.length <= 2 ? codes.map((c) => names.get(c)).join(", ") : `${codes.length} carriers`;
     list.push({ label, clear: { carriers: new Set() } });
   }
-  if (state.cause) list.push({ label: `Cause: ${app.causeLabels[state.cause]}`, clear: { cause: null } });
+  if (state.causes.size) list.push({ label: `Cause: ${selectedCausesLabel()}`, clear: { causes: new Set() } });
   return list;
 }
 
@@ -123,8 +123,8 @@ async function boot() {
   onChange((patch) => {
     hideTip(); // the hovered mark may move or disappear
     renderFilterBar();
-    // The cause is a display choice, so it needs no new data from the server.
-    if (Object.keys(patch).length === 1 && "cause" in patch) {
+    // Causes are a display choice, so they need no new data from the server.
+    if (Object.keys(patch).length === 1 && "causes" in patch) {
       renderViews();
       return;
     }

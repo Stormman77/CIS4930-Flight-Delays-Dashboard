@@ -132,7 +132,7 @@ export function createMap(geo) {
       .attr("opacity", (d) => (state.airports.size && !state.airports.has(d.origin) ? 0.3 : 1))
       .on("pointermove", (event, d) => showTip(event, tipHtml(d)))
       .on("pointerleave", hideTip)
-      .on("click", (event, d) => setState({ airports: toggled(state.airports, d.origin, event.shiftKey) }));
+      .on("click", (event, d) => setState({ airports: toggled(state.airports, d.origin, event.ctrlKey || event.metaKey) }));
 
     groups.select(".dot").attr("stroke-width", strokeWidth)
       .transition().duration(TRANSITION_MS).ease(transitionEase)

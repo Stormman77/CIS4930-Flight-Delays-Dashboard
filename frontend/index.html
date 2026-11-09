@@ -23,13 +23,13 @@
   <main id="dashboard" class="dashboard">
     <article class="card">
       <h2 id="timeline-title"></h2>
-      <p class="caption">How each day of June compared. The purple line is the share of arrived flights that landed at least 15 minutes late; choosing a cause switches it to that cause's share of delay minutes. Drag across days to filter the other views, and click outside the selection to clear it.</p>
+      <p class="caption">How each day of June compared. The purple line is the share of arrived flights that landed at least 15 minutes late; choosing causes switches it to their combined share of delay minutes. Drag across days to filter the other views, and click outside the selection to clear it.</p>
       <div id="timeline-chart" class="chart"></div>
     </article>
 
     <article class="card">
       <h2>Average arrival delay per flight, by scheduled departure hour</h2>
-      <p class="caption">Minutes per arrived flight, split by the cause airlines reported. Click a cause to recolor the other views.</p>
+      <p class="caption">Minutes per arrived flight, split by the cause airlines reported. Click a cause to recolor the other views; Ctrl+click (Cmd+click on Mac) combines causes.</p>
       <div id="hours-legend" class="legend"></div>
       <div id="hours-chart" class="chart"></div>
     </article>
@@ -43,14 +43,14 @@
           <button id="map-reset" type="button">Reset zoom</button>
         </div>
       </div>
-      <p class="caption">Flights are counted at their origin airport, so this shows where late-arriving flights departed from. Shift+click adds airports. Puerto Rico, the U.S. Virgin Islands, Guam and Saipan aren't drawn but count in the other views.</p>
+      <p class="caption">Flights are counted at their origin airport, so this shows where late-arriving flights departed from. Ctrl+click (Cmd+click on Mac) adds airports. Puerto Rico, the U.S. Virgin Islands, Guam and Saipan aren't drawn but count in the other views.</p>
       <div id="map-legend" class="legend"></div>
       <div id="map-chart" class="chart"></div>
     </article>
 
     <article class="card">
       <h2 id="carriers-title"></h2>
-      <p class="caption">How each airline compares for the current selection, worst first. Regional airlines appear under their own name, not the major airline they fly for. Click a carrier to filter; Shift+click adds more.</p>
+      <p class="caption">How each airline compares for the current selection, worst first. Regional airlines appear under their own name, not the major airline they fly for. Click a carrier to filter; Ctrl+click (Cmd+click on Mac) adds more.</p>
       <div class="legend"><span class="swatch" style="background:#c3c2b7"></span><span>Fewer than 30 flights in the selection</span></div>
       <div id="carriers-chart" class="chart"></div>
     </article>
